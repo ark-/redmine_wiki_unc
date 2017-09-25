@@ -58,3 +58,49 @@ DESC
     end
   end
 end
+
+class UriSchemeHelper
+
+  def trim(str)
+    return str.strip unless str == nil
+    return nil
+  end
+
+  def parse_args(args)
+    custom_uri = trim(args[0])
+    label = trim(args[1]) || custom_uri
+
+    return custom_uri, label
+  end
+
+  def get_tag(args)
+    return "(No parameters are specified. A valid URI is expected.)" if args.empty?
+    custom_uri, label = parse_args(args)
+
+    return <<TEMPLATE
+<a href=\"#{custom_uri}\">#{label}</a>
+TEMPLATE
+  end
+
+end
+
+Redmine::Plugin.register :redmine_wiki_customlink do
+  name 'Redmine Wiki Custom URI Scheme Links plugin'
+  author 'ark-'
+  description 'This is a plugin to allow custom URI scheme links in redmine, also known as a browser protocol'
+  version '0.0.1'
+
+  Redmine::WikiFormatting::Macros.register do
+    desc <<DESC
+Makes a link to custom protocol path.
+How to use:
+1) without a label: {{custom_link(steam://browsemedia)}}
+2) with a label:    {{custom_link(steam://friends/, Open Steam friends list)}}
+DESC
+
+    macro :custom_link do |obj, args|
+      h = UriSchemeHelper.new
+      h.get_tag(args).html_safe
+    end
+  end
+end
