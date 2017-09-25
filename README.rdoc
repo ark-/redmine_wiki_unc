@@ -2,30 +2,22 @@
 
 == What is this?
 
-This plugin provides an ability to make a link to files on your server share.
+This is based on an old plugin which provided the ability to make a link to files on your server share. However this allowed only the file:// type URI schemes. This fork adds an additional macro to link to any type of URL from an issue or the wiki using markdown.
 
 
 
 == How to Install
 
-A. If you have 'git' installed on your system:
-   1. Run the commands below:
-
-        $ cd $(REDMINE_HOME)
-        $ ruby script/plugin install git://github.com/bearmini/redmine_wiki_unc.git
-
-   2. Restart Redmine
-
 
 B. Otherwise
    1. Download an archived version (.zip file) of the plugin from
-      http://github.com/bearmini/redmine_wiki_unc/zipball/master
+      https://github.com/ark-/redmine_wiki_unc/archive/master.zip
 
    2. Unzip it. You are going to have redmine_wiki_unc_xxxxxxx directory.
       ('xxxxxxx' might be a combination of some characters)
 
-   3. Move the directory into redmine\vendor\plugins\ directory.
-      (You'll get redmine\vendor\plugins\redmine_wiki_unc_xxxxxxx\
+   3. Move the directory into plugins\ directory within redmine.
+      (You'll get \plugins\redmine_wiki_unc_xxxxxxx\
       directory and have some files in the directory.)
 
    4. Restart Redmine
@@ -34,8 +26,20 @@ B. Otherwise
 Note: Currently you don't have to do 'rake db:migrate_plugins' because this plugin does not use DBs.
 
 
+== How to use the new custom URI macro
 
-== How to use
+1. Wherever you can use Wiki notation, you can write 'custom_link' macro like this:
+
+     {{custom_link(steam://browsemedia)}}
+
+   The path can be containing white-space without the double quotation marks.
+   The path cannot be containing comma(,).
+
+2. You can specify a 'label' instead of displaying the custom path.
+
+     {{custom_link(steam://friends/, Open Steam friends list)}}
+
+== How to use the legacy UNC-only macro
 
 1. Wherever you can use Wiki notation, you can write 'unc' macro like this:
 
@@ -55,17 +59,7 @@ Note: Currently you don't have to do 'rake db:migrate_plugins' because this plug
 
 == How to update the installed version
 
-A. If you have the old version installed using 'git':
-   1. Run the commands below:
-
-        $ cd $(REDMINE_HOME)/vendor/plugins/redmien_wiki_unc
-        $ git pull origin master
-
-   2. Restart Redmine
-
-B. Otherwise
-   1. Repeat the steps for the installation.
-      (Taking a backup -- just copying the plugin directory to other place -- is recomennded)
+Repeat the steps for the installation.
 
 
 == Tips
@@ -78,13 +72,11 @@ B. Otherwise
 
      <a href="file://///server-name/dir/to/file">Label of the file</a>
 
-2. If you are using Firefox, you'll be happy with LocalLink plugin.
+2. For file:// scheme, if you are using Firefox, you'll be happy with LocalLink plugin.
    (Update: The plugin is currently not working with the latest version of Firefox.)
 
    If you are using Chrome, you'll be happy with LocalLinks plugin.
    https://chrome.google.com/webstore/search/LocalLinks
 
    Internet Explorer can handle file:// scheme without any add-ons.
-
-   For other browsers, please let me know how to work with file:// scheme happily.
 
